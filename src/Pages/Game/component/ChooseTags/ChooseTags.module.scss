@@ -1,0 +1,192 @@
+.mode-super-wrapper {
+    z-index: 2;
+    background: white;
+    position: fixed;
+    height: 13vh;
+    top: 15.2vh;
+    width: 100vw;
+}
+
+.mode-wrapper {
+    display: inline-flex;
+    align-items: flex-end;
+    background-color: #d9d9d9;
+    height: 6.39vh;
+    padding-left: 3.33vh;
+    border-bottom-right-radius: 999px;
+    border-top-right-radius: 999px;
+    position: fixed;
+    top: 22vh;
+}
+
+.mode-logo {
+    width: 13vh;
+    height: 13vh;
+}
+
+.mode-info {
+    color: var(--primitive-text-color);
+    padding-left: 1.85vh;
+    padding-right: 4vh;
+    margin: auto 0;
+}
+
+.number-ques {
+    top: 30vh;
+    position: fixed;
+    font-size: 2rem;
+    font-family: Work Sans;
+    margin: 0 50%;
+    border-radius: 30px;
+    padding-left: 5vh;
+    padding-right: 5vh;
+    background-color: var(--primitive-color);
+    color: white;
+}
+
+.taglist-superwrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.taglist-wrapper {
+    margin-top: 25vh;
+    position: relative;
+    z-index: 1;
+    width: 180vh;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.deciphering-taglist-wrapper {
+    margin-top: 35vh;
+}
+
+.tag {
+    width: 25vh;
+    height: 25vh;
+    margin-left: 5.55vh;
+    margin-top: 6.66vh;
+    font-size: 2rem;
+    border-radius: 30px;
+    position: relative;
+    vertical-align: top;
+}
+
+.open {
+    background-color: #3a7e57;
+    color: white;
+}
+
+.close {
+    background-color: #afabab;
+    color: white;
+
+    &:hover .text-close {
+        visibility: visible;
+    }
+}
+
+.image-close {
+    width: 25vh;
+    height: 25vh;
+    filter: grayscale(100%);
+}
+
+.text-close {
+    background-color: rgba(58, 58, 58, 0.95);
+    width: 25vh;
+    height: 25vh;
+    border-radius: 30px;
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+.lock {
+    height: 5.56vh;
+    max-width: 100%;
+}
+
+.coin-wrapper {
+    border: 2px solid white;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 13.78vh;
+    margin-top: 20px;
+}
+
+.coin {
+    width: 20px;
+    height: 20px;
+}
+
+.coin-price {
+    color: white;
+    margin-right: 5px;
+}
+
+.popupOpen {
+    opacity: 50%;
+    background-color: #fffbf1;
+}
+
+.buy-wrapper {
+    width: 73.7vh;
+    height: 36.33vh;
+    background-color: white;
+    border: 3px solid var(--primitive-color);
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 30px;
+}
+
+.popup-coin-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 18vh;
+    height: 4.6875vh;
+    border: 2px solid #ffaaaf;
+    border-radius: 999px;
+}
+
+.popup-lotus {
+    color: #ffaaaf;
+    font-weight: 700;
+}
+
+.question-wrapper {
+    padding-left: 6.25vh;
+    padding-right: 6.25vh;
+    text-align: center;
+}
+
+.confirm-btn {
+    width: 22.3vh;
+    height: 5.86vh;
+    border-radius: 20px;
+    font-size: 2.5rem;
+}
+
+.yes {
+    background-color: var(--primitive-color);
+    color: white;
+    margin-right: 3.9vh;
+}
+
+.no {
+    background-color: white;
+    color: black;
+    border: 2px solid var(--primitive-color);
+}

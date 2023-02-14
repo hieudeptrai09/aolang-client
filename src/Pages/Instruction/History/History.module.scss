@@ -1,0 +1,101 @@
+.super-wrapper {
+    overflow-y: overlay;
+}
+
+.wrapper {
+    position: relative;
+    width: 135vh;
+    margin: 0 auto;
+}
+
+.spandiv {
+    position: relative;
+    height: 450px;
+    top: 0px;
+    left: 0px;
+
+    & span span {
+        position: absolute;
+        z-index: 2;
+    }
+}
+
+.leaf-wrapper {
+    &:hover ~ .tooltip {
+        display: block;
+    }
+}
+
+.leaf {
+    width: 52px;
+}
+
+.event {
+    color: black;
+    position: absolute;
+    width: 200px;
+    z-index: 1;
+}
+
+.event-content {
+    font-style: italic;
+    font-size: 1.5rem;
+}
+
+.historyTop {
+    top: -30px;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    width: 55.56vh;
+    border-radius: 30px;
+    background-color: black;
+    border: 3px solid var(--primitive-color);
+    z-index: 3;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 42px;
+}
+
+.title {
+    color: white;
+    margin-left: 15px;
+}
+
+.description {
+    color: white;
+    font-size: 1.5rem;
+    text-align: justify;
+}
+
+.shelf {
+    position: absolute;
+    width: 96%;
+    height: 220px;
+    left: 0;
+    right: 0;
+}
+
+.shelf1 {
+    border-top: 4px solid #a6a6a6;
+}
+
+.shelf2 {
+    border-right: 4px solid #a6a6a6;
+    border-bottom: 4px solid #a6a6a6;
+}
+
+.shelf3 {
+    border-left: 4px solid #a6a6a6;
+    border-bottom: 4px solid #a6a6a6;
+}

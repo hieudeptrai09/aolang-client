@@ -1,0 +1,97 @@
+.wrapper {
+    margin-top: 15.2vh;
+}
+
+.second-wrapper {
+    display: flex;
+    height: 74.8vh;
+    align-items: center;
+}
+
+.logo-opacity {
+    width: 61.8vh;
+    height: 61.8vh;
+    margin-left: 7.3vh;
+}
+
+.game-instruction {
+    width: 70vw;
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.logo-block-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4vh;
+}
+
+.logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 24vh;
+}
+
+.left {
+    margin-left: 85px;
+}
+
+.logo-game {
+    width: 15.56vh;
+}
+
+.logo-link {
+    background-color: var(--primitive-color);
+    width: 11.5625vw;
+    height: 3.51vh;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 999px;
+    margin-top: 0.74vh;
+    margin-bottom: 2.59vh;
+}
+
+.game-description {
+    font-size: 1.5rem;
+    text-justify: inter-word;
+    display: flex;
+    color: var(--primitive-text-color);
+}
+
+.third-wrapper {
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    color: var(--primitive-text-color);
+    font-size: 1.7rem;
+}
+
+.slogan {
+    margin-left: 6.64vh;
+}
+
+.slogan-first-letter {
+    color: black;
+}
+
+.policy {
+    margin-right: 6.64vh;
+    text-align: right;
+}
+
+.second-policy {
+    margin-left: 4.5vh;
+}
+
+.logo {
+    height: 3.8vh;
+    margin-left: 5px;
+}
+
+.link {
+    color: var(--primitive-text-color);
+    text-decoration: underline;
+}

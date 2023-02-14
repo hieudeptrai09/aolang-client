@@ -1,0 +1,26 @@
+.wrapper {
+    margin-top: 15.2vh;
+    display: flex;
+}
+
+.menu-sidebar {
+    width: 33vh;
+    height: 84.8vh;
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+}
+
+.active {
+    color: var(--primitive-color);
+}
+
+.first-menu-item {
+    margin-top: 17vh;
+}
+
+.menu-item {
+    background-color: #f8f8f8;
+    font-weight: 700;
+    margin-bottom: 3.8vh;
+}

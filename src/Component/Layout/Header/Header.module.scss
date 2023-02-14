@@ -1,0 +1,50 @@
+.wrapper {
+    width: 100%;
+    height: 15.2vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 10vh;
+    margin-left: 7.4vh;
+}
+
+.project-name {
+    font-family: 'UVNThanhPho';
+    margin-left: 2.22vh;
+    font-size: 4rem;
+}
+
+.link-wrapper {
+    background-color: #f6f5f5;
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    margin-right: 4vw;
+    padding-left: 1vh;
+    padding-right: 1vh;
+}
+
+.link {
+    padding: 1.76vh;
+    border-radius: 999px;
+    color: #afabab;
+
+    &.active {
+        padding-top: 1.2vh;
+        padding-bottom: 1.2vh;
+        background-color: #54ae7b;
+        color: white;
+    }
+}

@@ -1,0 +1,99 @@
+.logo-wrapper {
+    display: flex;
+    margin-top: 15.2vh;
+    height: 11.1vh;
+    width: 100vw;
+    justify-content: space-evenly;
+    background-color: #e7e6e6;
+    position: fixed;
+    top: 0;
+}
+
+.active {
+    background-color: #bfbfbf !important;
+    color: white !important;
+}
+
+.logo-item-wrapper {
+    display: flex;
+    height: 11.1vh;
+    align-items: center;
+    background-color: #e7e6e6;
+    padding-left: 3.5vh;
+    padding-right: 3.5vh;
+}
+
+.logo-mode {
+    width: 7.5vh;
+    margin-left: 1.67vh;
+}
+
+.logo-link {
+    color: var(--primitive-text-color);
+    font-size: 2.5rem;
+    margin-left: 2vh;
+}
+
+.body-wrapper {
+    margin-top: 26.3vh;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5vh;
+}
+
+.title-wrapper {
+    margin-left: 9.26vh;
+    margin-right: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 73.7vh;
+    width: 60vh;
+}
+
+.big-logo-mode {
+    width: 35.37vh;
+}
+
+.big-logo-title {
+    color: var(--primitive-color);
+    font-size: 4rem;
+}
+
+.big-logo-description {
+    color: var(--primitive-text-color);
+}
+
+.content-wrapper {
+    column-count: 2;
+    margin-right: 9.26vh;
+    margin-top: 8vh;
+}
+
+.content-item-wrapper {
+    display: flex;
+    margin-bottom: 5vh;
+    align-items: center;
+    color: black;
+}
+
+.content-logo {
+    height: 12.5vh;
+    border-radius: 50%;
+}
+
+.content-description-wrapper {
+    margin-left: 2.8vh;
+}
+
+.content-description {
+    font-size: 1.6rem;
+}
+
+.facebook {
+    color: blue;
+}
+
+.globe {
+    color: orange;
+}

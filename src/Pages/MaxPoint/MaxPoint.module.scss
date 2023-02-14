@@ -1,0 +1,142 @@
+.logo-wrapper {
+    display: flex;
+    margin-top: 15.2vh;
+    height: 11.1vh;
+    width: 100vw;
+    justify-content: space-evenly;
+    background-color: #e7e6e6;
+    position: fixed;
+    top: 0;
+}
+
+.logo-item-wrapper {
+    display: flex;
+    height: 11.1vh;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.logo-mode {
+    width: 6.3vh;
+    margin-left: 1.67vh;
+}
+
+.logo-link {
+    color: var(--primitive-text-color);
+    font-size: 2.2rem;
+    background-color: transparent;
+}
+
+.mode-active {
+    background-color: #afabab;
+    color: white;
+}
+
+.body-wrapper {
+    margin-top: 26.3vh;
+    display: flex;
+    align-items: flex-start;
+}
+
+.sidebar {
+    width: 30.37vh;
+    border-right: 4px solid var(--primitive-color);
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding-left: 3.52vh;
+    margin-bottom: 1vh;
+    height: 8.15vh;
+}
+
+.logo-ao {
+    width: 6.48vh;
+    height: 6.48vh;
+    margin-right: 1.48vh;
+}
+
+.mode-btn {
+    background-color: transparent;
+}
+
+.tag-active {
+    background-color: #e7e6e6;
+    width: 29.7vh;
+}
+
+.edition {
+    font-size: 15px;
+    text-align: left;
+    word-break: break-all;
+}
+
+.edition-name {
+    font-size: 13px;
+    text-align: left;
+    word-break: break-all;
+}
+
+.title {
+    text-align: center;
+    margin-top: 4vh;
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.rank-table {
+    margin-left: 5.19vh;
+    width: 78.125vw;
+    margin-top: 4vh;
+    border-collapse: collapse;
+}
+
+.rank-header-wrapper {
+    margin-bottom: 1.66vh;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stt {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    border: 2px solid var(--primitive-text-color);
+    background-color: #fff2cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rank-body-row {
+    border-radius: 999px;
+    font-size: 2rem;
+}
+
+.rank-body {
+    background-color: #fff2cc;
+}
+
+.point {
+    font-weight: 600;
+}
+
+.first-rank-body {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+.last-rank-body {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.gap1 {
+    height: 1vh;
+}
+
+.gap2 {
+    height: 2vh;
+}

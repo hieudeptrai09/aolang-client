@@ -1,0 +1,32 @@
+.wrapper {
+    margin-top: 15.2vh;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+}
+
+.link-wrapper {
+    width: 100vw;
+    height: 5.55vh;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: space-evenly;
+    align-self: center;
+    border-radius: 999px;
+    position: fixed;
+    top: 15.2vh;
+}
+
+.link-item {
+    background-color: #f8f8f8;
+    color: #ababab;
+    font-size: 1.7rem;
+}
+
+.active {
+    font-weight: 700;
+}
+
+.content-wrapper {
+    margin-top: 5.55vh;
+}

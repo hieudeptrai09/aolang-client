@@ -1,0 +1,73 @@
+.info-wrapper {
+    display: flex;
+    margin-left: 9vh;
+    margin-top: 9vh;
+    margin-bottom: 9vh;
+    align-items: center;
+}
+
+.avatar-header {
+    position: relative;
+}
+
+.avatar {
+    width: 18.3vh;
+    height: 18.3vh;
+    border-radius: 50%;
+    border: 4px solid var(--primitive-color);
+    margin-right: 2.6vh;
+}
+
+.avatar-btn-wrapper {
+    width: 5.83vh;
+    height: 5.83vh;
+    border-radius: 50%;
+    border: 2px solid var(--primitive-color);
+    position: absolute;
+    left: 54vh;
+    top: 36.67vh;
+}
+
+.avatar-btn {
+    display: none;
+}
+
+.avatar-btn-image {
+    width: 5.4vh;
+    border-radius: 50%;
+}
+
+.info-username {
+    color: var(--primitive-text-color);
+    font-size: 1.5rem;
+}
+
+.account-letter {
+    font-weight: 700;
+    color: var(--primitive-text-color);
+}
+
+.info-name {
+    color: var(--primitive-color);
+    font-weight: 700;
+}
+
+.info-school {
+    color: var(--primitive-text-color);
+    font-size: 1.5rem;
+}
+
+.lotus-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.no-of-lotus {
+    color: #ffaaaf;
+    font-weight: 700;
+}
+
+.lotus {
+    width: 25px;
+    margin-left: 5px;
+}

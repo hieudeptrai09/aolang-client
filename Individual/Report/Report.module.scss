@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+}
+
+.btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content: space-between;
+}
+
+.btn {
+    flex: 1;
+    background-color: var(--primitive-color);
+    color: white;
+    border-bottom: 1px solid white;
+    width: 400px;
+    padding: 4px;
+}
+
+.content-wrapper {
+    margin-left: 5px;
+}
+
+.content {
+    font-size: 1.5rem;
+}

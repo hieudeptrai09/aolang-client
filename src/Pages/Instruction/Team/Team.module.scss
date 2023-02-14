@@ -1,0 +1,41 @@
+.wrapper {
+    margin-top: 3vh;
+}
+
+.content-wrapper {
+    display: flex;
+    align-items: center;
+    padding-top: 4.5vh;
+    padding-bottom: 4.5vh;
+    padding-left: 10vh;
+    padding-right: 10vh;
+
+    &:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+}
+
+.member-image {
+    width: 50vh;
+    margin-right: 5vh;
+}
+
+.member-name {
+    color: var(--primitive-color);
+}
+
+.member-title {
+    margin-bottom: 5vh;
+    white-space: pre-line;
+}
+
+.member-content {
+    color: var(--primitive-text-color);
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    height: 30px;
+    margin-right: 1vh;
+}

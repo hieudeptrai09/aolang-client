@@ -1,0 +1,16 @@
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-item {
+    flex: 1;
+    height: 30px;
+    color: white;
+    background-color: var(--primitive-color);
+    border-right: 1px solid white;
+}
+
+.active {
+    background-color: var(--green-active);
+}

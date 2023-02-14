@@ -1,0 +1,161 @@
+.mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 70px;
+    background-color: var(--primitive-color);
+    font-size: 4rem;
+    font-weight: 700;
+    color: white;
+    margin-right: 8px;
+    position: relative;
+    top: 0;
+    left: calc(50vw - 70px);
+}
+
+.wrapper {
+    font-size: 2rem;
+    border-collapse: separate;
+    background-color: #f2f2f2;
+    border-spacing: 7px;
+    overflow-x: overlay;
+    width: 100vw;
+}
+
+td,
+th {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.content-item {
+    border: 2px solid #767171;
+    color: var(--primitive-text-color);
+}
+
+.content-item:hover > .hover-btn {
+    display: block;
+}
+
+.hover-btn {
+    display: none;
+}
+
+.poem {
+    white-space: pre-line;
+}
+
+.numeral {
+    color: var(--primitive-text-color);
+    font-weight: 700;
+}
+
+.media-btn {
+    width: 20px;
+    height: 20px;
+    color: blue;
+}
+
+.explain-btn {
+    width: 20px;
+    height: 20px;
+    color: blue;
+    margin-left: 4px;
+}
+
+.explain-wrapper {
+    width: 40vw;
+    height: 40vh;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--primitive-color);
+    border-radius: 10px;
+    color: white;
+}
+
+.audio-wrapper {
+    background-color: white;
+    color: var(--primitive-text-color);
+    border: 4px solid var(--primitive-color);
+}
+
+.question-image {
+    height: 30vh;
+}
+
+.wrong {
+    background-color: #bfbfbf;
+}
+
+.right {
+    color: white;
+    background-color: #5dc277;
+}
+
+.report-btn {
+    background-color: transparent;
+    font-size: 2rem;
+    color: red;
+}
+
+.send-report-input {
+    background-color: var(--primitive-color);
+    color: white;
+    border-bottom: 1px solid white;
+    height: 80px;
+    padding: 4px;
+    width: 90%;
+    font-size: 1.5rem;
+}
+
+.will-send-successfully {
+    display: none;
+}
+
+.footer-btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.ques-table-btn {
+    display: block;
+    width: 200px;
+    height: 40px;
+    font-size: 1.8rem;
+    border-radius: 5px;
+    background-color: var(--primitive-color);
+    margin: 15px 25px;
+    color: white;
+}
+
+.to-save-btn {
+    margin-right: 0px;
+}
+
+.save-name {
+    font-size: 2rem;
+    color: white;
+}
+
+.save-name-input {
+    background-color: var(--primitive-color);
+    color: white;
+    border-bottom: 1px solid white;
+    height: 30px;
+    padding-bottom: 4px;
+    width: 70%;
+    font-size: 1.5rem;
+}
+
+.popup-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    position: relative;
+    width: 70%;
+}
