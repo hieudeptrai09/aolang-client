@@ -20,13 +20,28 @@ function AddQuestion() {
         explanation: '',
         audio: '',
         keyWords: '',
-        subject: 'Toán',
         difficulty: 10,
         type: 'marathon',
     };
     const [question, setQuestion] = useState(aQuestion);
     const [index, setIndex] = useState(0);
     const [saveStates, setSaveStates] = useState('');
+    const [tags, setTags] = useState([4]);
+
+    const toAddATag = () => {
+        setTags([...tags, 0]);
+    };
+
+    const toChangeTag = (value, tagIndex) => {
+        let newTags = [...tags];
+        newTags[tagIndex] = Number.parseInt(value);
+        setTags(newTags);
+    };
+
+    const toDeleteTags = (tagIndex) => {
+        tags.splice(tagIndex, 1);
+        setTags([...tags]);
+    };
 
     const updateQuestion = (value, position) => {
         question[position] = value;
@@ -59,16 +74,20 @@ function AddQuestion() {
         if (question.question !== '' && question.answer !== '') {
             const payload = new FormData();
             payload.append('question', JSON.stringify(question));
+            payload.append('tag', JSON.stringify(tags));
             payload.append('id', getCookie().dxnlcm);
             request.post('/pendingQuestion/sendPendingQuestion.php', payload).then((res) => {
+                console.log(res);
                 if (!!res) {
                     setSaveStates('Đã lưu thành công');
-                    setQuestion(aQuestion);
-                    setIndex(index + 1);
                 } else setSaveStates('Lưu thất bại');
                 setTimeout(() => {
                     setSaveStates('');
-                }, 3000);
+                    setQuestion(aQuestion);
+                    setIndex(index + 1);
+                    // setTags([4])
+                    document.getElementById('captain').classList.remove('popupOpen');
+                }, 1000);
             });
         } else {
             let states = '';
@@ -84,33 +103,6 @@ function AddQuestion() {
                 <Header isLogin />
                 <div className={cx('wrapper')} id="captain">
                     <div className={cx('step20-wrapper')}>
-                        <div className={cx('function-area')}>
-                            <Popup
-                                modal
-                                trigger={
-                                    <button className={cx('add-btn-item')}>
-                                        <FontAwesomeIcon icon={faFloppyDisk} />
-                                    </button>
-                                }
-                                onOpen={() => document.getElementById('captain').classList.add('popupOpen')}
-                                onClose={() => document.getElementById('captain').classList.remove('popupOpen')}
-                            >
-                                {(close) => (
-                                    <div className="popup-wrapper">
-                                        <p>Bạn có muốn lưu không?</p>
-                                        <div className={cx('popup-header')}>
-                                            <button className="popup-btn wrong-color" onClick={close}>
-                                                Không
-                                            </button>
-                                            <button className="popup-btn correct-color" onClick={toSave}>
-                                                Có
-                                            </button>
-                                        </div>
-                                        {saveStates !== '' && <p className="save-successfully">{saveStates}</p>}
-                                    </div>
-                                )}
-                            </Popup>
-                        </div>
                         <div className={cx('type-area')} id="question-captain" key={index}>
                             <div className={cx('field-wrapper')}>
                                 <label className={cx('field-label')}>Câu hỏi</label>
@@ -236,6 +228,65 @@ function AddQuestion() {
                                         <option value="hurdling">Hurdling</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div className={cx('dropdown-wrapper', 'tag-wrapper')}>
+                                {tags.map((tag, tagIndex) => (
+                                    <div key={tagIndex} className={cx('field-wrapper')}>
+                                        <label className={cx('field-label')}>Lĩnh vực</label>
+                                        <select
+                                            className={cx('dropdown-input')}
+                                            value={tag}
+                                            onChange={(e) => toChangeTag(e.target.value, tagIndex)}
+                                        >
+                                            <option value="0" disabled></option>
+                                            <option value="4">Toán học</option>
+                                            <option value="5">Vật lí</option>
+                                            <option value="6">Hóa học</option>
+                                            <option value="7">Sinh học</option>
+                                            <option value="8">Văn học</option>
+                                            <option value="9">Lịch sử</option>
+                                            <option value="10">Địa lí</option>
+                                            <option value="11">Thể thao</option>
+                                            <option value="12">Nghệ thuật</option>
+                                            <option value="13">Hiểu biết chung</option>
+                                            <option value="14">Tiếng Anh</option>
+                                            <option value="15">Lĩnh vực khác</option>
+                                        </select>
+                                        <button className={cx('delete-btn')} onClick={() => toDeleteTags(tagIndex)}>
+                                            Xóa lĩnh vực này
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={cx('function-area')}>
+                                <button className={cx('add-btn-item')} onClick={() => toAddATag()}>
+                                    Thêm một lĩnh vực
+                                </button>
+                                <Popup
+                                    modal
+                                    trigger={
+                                        <button className={cx('add-btn-item')}>
+                                            <FontAwesomeIcon icon={faFloppyDisk} />
+                                        </button>
+                                    }
+                                    onOpen={() => document.getElementById('captain').classList.add('popupOpen')}
+                                    onClose={() => document.getElementById('captain').classList.remove('popupOpen')}
+                                >
+                                    {(close) => (
+                                        <div className="popup-wrapper">
+                                            <p>Bạn có muốn lưu không?</p>
+                                            <div className={cx('popup-header')}>
+                                                <button className="popup-btn wrong-color" onClick={close}>
+                                                    Không
+                                                </button>
+                                                <button className="popup-btn correct-color" onClick={toSave}>
+                                                    Có
+                                                </button>
+                                            </div>
+                                            {saveStates !== '' && <p className="save-successfully">{saveStates}</p>}
+                                        </div>
+                                    )}
+                                </Popup>
                             </div>
                         </div>
                     </div>

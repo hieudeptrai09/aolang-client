@@ -135,3 +135,11 @@ a:hover {
     border-radius: 5px;
     margin-top: 20px;
 }
+
+.ql-container.ql-disabled .ql-tooltip {
+    display: none;
+}
+
+.ql-editor {
+    font-family: var(--primitive-font-family);
+}

@@ -20,9 +20,7 @@ function SentQuestion() {
                     id: getCookie().dxnlcm,
                 },
             })
-            .then((res) => {
-                setQuestions(res);
-            });
+            .then((res) => setQuestions(res));
     }, []);
 
     return (

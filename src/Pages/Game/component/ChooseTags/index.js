@@ -24,6 +24,7 @@ function ChooseTags() {
     const [lotus, setLotus] = useState(0);
     const [mode, setMode] = useState('');
     const [choseTags, setChoseTags] = useState(0);
+    const [award, setAward] = useState(0);
     const [totalQuestion, setTotalQuestion] = useState(0);
     const [result, setResult] = useState('');
     const navigate = useNavigate();
@@ -140,7 +141,14 @@ function ChooseTags() {
                             id="captain"
                         >
                             {boughtTags.map((tag) => (
-                                <button key={tag.id} onClick={() => setChoseTags(tag.id)} className={cx('tag', 'open')}>
+                                <button
+                                    key={tag.id}
+                                    onClick={() => {
+                                        setChoseTags(tag.id);
+                                        setAward(tag.award);
+                                    }}
+                                    className={cx('tag', 'open')}
+                                >
                                     {tag.tagname}
                                 </button>
                             ))}
@@ -203,15 +211,17 @@ function ChooseTags() {
         } else {
             switch (mode) {
                 case 'marathon':
-                    return <Starting tagId={choseTags} />;
+                    return <Starting tagId={choseTags} award={award} />;
                 case 'hurdling':
-                    return <Finish tagId={choseTags} />;
+                    return <Finish tagId={choseTags} award={award} />;
                 case 'calculaphobia':
-                    return <MentalCalculating tagId={choseTags} />;
+                    return <MentalCalculating tagId={choseTags} award={award} />;
                 case 'deciphering':
-                    return <Deciphering tagId={Number.parseInt(choseTags)} totalQuestion={totalQuestion} />;
+                    return (
+                        <Deciphering tagId={Number.parseInt(choseTags)} totalQuestion={totalQuestion} award={award} />
+                    );
                 case 'vocab':
-                    return <Vocab tagId={Number.parseInt(choseTags)} />;
+                    return <Vocab tagId={Number.parseInt(choseTags)} award={award} />;
                 default:
             }
         }

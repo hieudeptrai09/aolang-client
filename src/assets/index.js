@@ -10,6 +10,8 @@ export const images = {
     calculaphobia: require('./images/calculaphobia.png'),
     deciphering: require('./images/deciphering.png'),
     vocab: require('./images/vocaboostery.png'),
+    clicky: require('./images/clicky.png'),
+    verbatim: require('./images/verbatim.png'),
     communityBig: require('./images/communityBig.png'),
     communitySmall: require('./images/communitySmall.png'),
     puzzleBig: require('./images/puzzleBig.png'),

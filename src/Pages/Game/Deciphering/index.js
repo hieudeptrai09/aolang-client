@@ -4,7 +4,7 @@ import { request, useGlobalStates, actions, getCookie, HOST_URL } from '../../..
 import Question from '../component/Question';
 import config from '../../../config';
 
-function Deciphering({ tagId, totalQuestion }) {
+function Deciphering({ tagId, totalQuestion, award }) {
     const dispatch = useGlobalStates()[1];
 
     const [aQuestion, setAQuestion] = useState({});
@@ -126,7 +126,7 @@ function Deciphering({ tagId, totalQuestion }) {
 
             const payload4 = new FormData();
             payload4.append('id', getCookie().dxnlcm);
-            payload4.append('lotus', (mark / 10) * -3);
+            payload4.append('lotus', (mark / 10) * -award);
             request.post('/user/addLotus.php', payload4).then((res) => {});
 
             if (totalQuestion > 0) navigate(config.routes.questionsTable, { replace: true });

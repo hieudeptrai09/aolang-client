@@ -20,39 +20,3 @@
     color: white;
     background-color: var(--primitive-color);
 }
-
-.paragraph {
-    margin-left: 35px;
-    word-spacing: 7px;
-    margin-right: 60px;
-    margin-bottom: 10px;
-    text-align: justify;
-    text-indent: 50px;
-}
-
-.li {
-    margin-left: 80px;
-}
-
-.normal {
-    color: black;
-}
-
-.strong {
-    font-weight: 600;
-}
-
-.link {
-    color: black;
-    text-decoration: underline;
-}
-
-.image-wrapper {
-    text-align: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.image {
-    max-width: 70vw;
-}

@@ -19,7 +19,8 @@ String.prototype.oafuys = function () {
     temp2 = temp.replace(/qủy/g, 'quỷ');
     temp = temp2.replace(/qũy/g, 'quỹ');
     temp2 = temp.replace(/qụy/g, 'quỵ');
-    return temp2;
+    temp = temp2.replace(/\n/g, '');
+    return temp;
 };
 
 const isCorrect = (playersAnswer, correctAnswer) => {

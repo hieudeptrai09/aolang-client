@@ -13,7 +13,7 @@ function Password({ password, setPassword, setIsEnter, label, isForce, ...passPr
             <div className={cx('checkbox-login-wrapper')}>
                 <label className={cx('field-label')}>
                     {label}
-                    {isForce && <span>*</span>}
+                    {isForce && <span className={cx('hoathi')}>*</span>}
                 </label>
                 <img
                     className={cx('eyes')}

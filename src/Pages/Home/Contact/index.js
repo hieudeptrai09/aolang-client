@@ -15,19 +15,19 @@ function Contact() {
                 <p className={cx('predicate')}>Liên hệ với chúng tôi qua</p>
                 <div className={cx('contact-wrapper')}>
                     <div className={cx('contact-item-wrapper')}>
-                        <a href="https://www.facebook.com/aolang.edu.vn">
+                        <a href="https://www.facebook.com/aolang.edu.vn" target="_blank">
                             <img className={cx('logo')} src={images.aolang} alt="" />
                         </a>
                         <p className={cx('contact-item')}>Fanpage</p>
                     </div>
                     <div className={cx('contact-item-wrapper')}>
-                        <a href="https://www.facebook.com/groups/1278600006068969">
+                        <a href="https://www.facebook.com/groups/1278600006068969" target="_blank">
                             <img className={cx('logo')} src={images.facebook} alt="" />
                         </a>
                         <p className={cx('contact-item')}>Nhóm Facebook</p>
                     </div>
                     <div className={cx('contact-item-wrapper')}>
-                        <a href="https://mail.google.com">
+                        <a href="https://mail.google.com" target="_blank">
                             <img className={cx('logo')} src={images.mail} alt="" />
                         </a>
                         <p className={cx('contact-item', 'email')}>Thư điện tử (aolang.edu.vn@gmail.com)</p>

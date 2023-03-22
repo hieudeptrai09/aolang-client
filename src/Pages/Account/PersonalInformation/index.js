@@ -38,34 +38,40 @@ function PersonalInformation({ setChanged }) {
             });
     }, []);
 
-    function getProvinceList() {
+    useEffect(() => {
         request.get('/user/searchProvince.php').then((res) => {
             setProvinceList(res);
         });
-    }
+    }, []);
 
-    function getDistrictList() {
-        request
-            .get('/user/searchDistrict.php', {
-                params: {
-                    provinceId: province,
-                },
-            })
-            .then((res) => setDistrictList(res));
-    }
+    useEffect(() => {
+        if (province !== '') {
+            request
+                .get('/user/searchDistrict.php', {
+                    params: {
+                        provinceId: province,
+                    },
+                })
+                .then((res) => {
+                    setDistrictList(res);
+                });
+        }
+    }, [province]);
 
-    function getSchoolList() {
-        request
-            .get('/user/searchSchool.php', {
-                params: {
-                    provinceId: province,
-                    districtId: district,
-                },
-            })
-            .then((res) => {
-                setSchoolList(res);
-            });
-    }
+    useEffect(() => {
+        if (district !== '' && province !== '') {
+            request
+                .get('/user/searchSchool.php', {
+                    params: {
+                        provinceId: province,
+                        districtId: district,
+                    },
+                })
+                .then((res) => {
+                    setSchoolList(res);
+                });
+        }
+    }, [district, province]);
 
     const toSave = () => {
         const payload = new FormData();
@@ -94,12 +100,7 @@ function PersonalInformation({ setChanged }) {
                 <div className={cx('row-input-wrapper')}>
                     <div className={cx('cell-input-wrapper')}>
                         <label className={cx('cell-label')}>Trường</label>
-                        <select
-                            onClick={getSchoolList}
-                            className={cx('cell-input')}
-                            onChange={(e) => setSchool(e.target.value)}
-                            value={school}
-                        >
+                        <select className={cx('cell-input')} onChange={(e) => setSchool(e.target.value)} value={school}>
                             <option value="" disabled></option>
                             {schoolList.map((school, index) => {
                                 return (
@@ -113,7 +114,6 @@ function PersonalInformation({ setChanged }) {
                     <div className={cx('cell-input-wrapper')}>
                         <label className={cx('cell-label')}>Huyện</label>
                         <select
-                            onClick={getDistrictList}
                             className={cx('cell-input')}
                             onChange={(e) => {
                                 if (e.target.value.localeCompare(district) !== 0) setSchool('');
@@ -134,7 +134,6 @@ function PersonalInformation({ setChanged }) {
                     <div className={cx('cell-input-wrapper')}>
                         <label className={cx('cell-label')}>Tỉnh</label>
                         <select
-                            onClick={getProvinceList}
                             className={cx('cell-input')}
                             onChange={(e) => {
                                 if (e.target.value.localeCompare(province) !== 0) {

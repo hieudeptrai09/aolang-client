@@ -18,11 +18,11 @@ function Register() {
     const [password2nd, setPassword2nd] = useState('');
     const [email, setEmail] = useState('');
     const [fullname, setFullname] = useState('');
-    const [province, setProvince] = useState('');
+    const [province, setProvince] = useState('1');
     const [provinceList, setProvinceList] = useState([]);
-    const [district, setDistrict] = useState('');
+    const [district, setDistrict] = useState('1');
     const [districtList, setDistrictList] = useState([]);
-    const [school, setSchool] = useState('');
+    const [school, setSchool] = useState('1');
     const [schoolList, setSchoolList] = useState([]);
     const [usernameVerify, setUsernameVerify] = useState('');
     const [passwordVerify, setPasswordVerify] = useState('');
@@ -41,22 +41,10 @@ function Register() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setDistrict('');
-        setDistrictVerify('');
-        setSchool('');
-        setSchoolVerify('');
-    }, [province]);
+        request.get('/user/searchProvince.php').then((res) => setProvinceList(res));
+    }, []);
 
     useEffect(() => {
-        setSchool('');
-        setSchoolVerify('');
-    }, [district]);
-
-    function getProvinceList() {
-        request.get('/user/searchProvince.php').then((res) => setProvinceList(res));
-    }
-
-    function getDistrictList() {
         if (province.length === 0) setDistrictVerify('cần chọn tỉnh trước');
         else
             request
@@ -66,9 +54,10 @@ function Register() {
                     },
                 })
                 .then((res) => setDistrictList(res));
-    }
+    }, [province]);
 
-    function getSchoolList() {
+    useEffect(() => {
+        console.log(province + ' ' + district);
         if (province.length === 0 || district.length === 0) setSchoolVerify('cần chọn tỉnh và huyện trước');
         else
             request
@@ -79,7 +68,7 @@ function Register() {
                     },
                 })
                 .then((res) => setSchoolList(res));
-    }
+    }, [district]);
 
     function verifyUsername() {
         if (username.length < 3) {
@@ -277,7 +266,7 @@ function Register() {
                     <div className={cx('a-line-field')}>
                         <div className={cx('field')}>
                             <label className={cx('field-label')}>
-                                Tên đăng nhập<span>*</span>
+                                Tên đăng nhập<span className={cx('hoathi')}>*</span>
                             </label>
                             <input
                                 className={cx('username-input', 'field-input')}
@@ -289,7 +278,7 @@ function Register() {
                         </div>
                         <div className={cx('field')}>
                             <label className={cx('field-label')}>
-                                Họ và tên<span>*</span>
+                                Họ và tên<span className={cx('hoathi')}>*</span>
                             </label>
                             <input
                                 className={cx('fullname-input', 'field-input')}
@@ -303,16 +292,20 @@ function Register() {
                     <div className={cx('a-line-field')}>
                         <div className={cx('field')}>
                             <label className={cx('field-label')}>
-                                Tỉnh thành<span>*</span>
+                                Tỉnh thành<span className={cx('hoathi')}>*</span>
                             </label>
                             <select
-                                onClick={getProvinceList}
                                 className={cx('username-input', 'field-input')}
-                                onChange={(e) => setProvince(e.target.value)}
+                                onChange={(e) => {
+                                    setProvince(e.target.value);
+                                    setDistrict('');
+                                    setDistrictVerify('');
+                                    setSchool('');
+                                    setSchoolVerify('');
+                                }}
                                 value={province}
                                 onBlur={() => verifyProvince()}
                             >
-                                <option value="" disabled></option>
                                 {provinceList.map((province, index) => {
                                     return (
                                         <option key={index} value={province.provinceid}>
@@ -325,16 +318,18 @@ function Register() {
                         </div>
                         <div className={cx('field')}>
                             <label className={cx('field-label')}>
-                                Quận, huyện<span>*</span>
+                                Quận, huyện<span className={cx('hoathi')}>*</span>
                             </label>
                             <select
-                                onClick={getDistrictList}
                                 className={cx('fullname-input', 'field-input')}
-                                onChange={(e) => setDistrict(e.target.value)}
+                                onChange={(e) => {
+                                    setDistrict(e.target.value);
+                                    setSchool('');
+                                    setSchoolVerify('');
+                                }}
                                 value={district}
                                 onBlur={() => verifyDistrict()}
                             >
-                                <option value="" disabled></option>
                                 {districtList.map((district, index) => {
                                     return (
                                         <option key={index} value={district.districtid}>
@@ -348,16 +343,14 @@ function Register() {
                     </div>
                     <div className={cx('field')}>
                         <label className={cx('field-label')}>
-                            Trường<span>*</span>
+                            Trường<span className={cx('hoathi')}>*</span>
                         </label>
                         <select
-                            onClick={getSchoolList}
                             className={cx('field-input')}
                             onChange={(e) => setSchool(e.target.value)}
                             value={school}
                             onBlur={() => verifySchool()}
                         >
-                            <option value="" disabled></option>
                             {schoolList.map((school, index) => {
                                 return (
                                     <option key={index} value={school.schoolId}>
@@ -370,7 +363,7 @@ function Register() {
                     </div>
                     <div className={cx('field')}>
                         <label className={cx('field-label')}>
-                            Email<span>*</span>
+                            Email<span className={cx('hoathi')}>*</span>
                         </label>
                         <input
                             className={cx('field-input')}

@@ -5,7 +5,7 @@ import { request, useGlobalStates, actions, getCookie } from '../../../warehouse
 import Question from '../component/Question';
 import config from '../../../config';
 
-function Vocab({ tagId }) {
+function Vocab({ tagId, award }) {
     const dispatch = useGlobalStates()[1];
 
     const [aQuestion, setAQuestion] = useState({});
@@ -110,12 +110,10 @@ function Vocab({ tagId }) {
             payload2.append('tagId', tagId);
             request.post('/maxpoint/saveMaxPoint.php', payload2).then((res) => {});
 
-            if (tagId === 24) {
-                const payload4 = new FormData();
-                payload4.append('id', getCookie().dxnlcm);
-                payload4.append('lotus', (mark / 10) * -1);
-                request.post('/user/addLotus.php', payload4).then((res) => {});
-            }
+            const payload4 = new FormData();
+            payload4.append('id', getCookie().dxnlcm);
+            payload4.append('lotus', (mark / 10) * -award);
+            request.post('/user/addLotus.php', payload4).then((res) => {});
 
             navigate(config.routes.questionsTable, { replace: true });
         }

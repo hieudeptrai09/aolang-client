@@ -5,7 +5,7 @@ import { actions, useGlobalStates, getCookie, request } from '../../../warehouse
 import Question from '../component/Question';
 import config from '../../../config';
 
-function MentalCalculating({ tagId }) {
+function MentalCalculating({ tagId, award }) {
     const [aQuestion, setAQuestion] = useState({});
     const [count, setCount] = useState(1);
     const [noOfQuestion, setNoOfQuestion] = useState(1);
@@ -118,6 +118,7 @@ function MentalCalculating({ tagId }) {
                         let answer = member[0] * member[0];
                         if (answer === 1) question.answer = '1';
                         else if (answer === -1) question.answer = '-1';
+                        else if (answer === 0) question.answer = '0';
                         else if (answer > 0) question.answer = '1/' + answer;
                         else question.answer = '-1/' + answer + '~|1/-' + answer + '~|1/(-' + answer + ')';
                     }
@@ -159,12 +160,19 @@ function MentalCalculating({ tagId }) {
             dispatch(actions.setAskedQuestion(askedQuestionCorrect));
             dispatch(actions.setCorrect(correctAnswered));
             dispatch(actions.setAnswered(playersAnswered));
+
             const payload2 = new FormData();
             payload2.append('userId', getCookie().dxnlcm);
             payload2.append('mark', mark);
             payload2.append('time', new Date().getTime());
             payload2.append('tagId', 20);
             request.post('/maxpoint/saveMaxPoint.php', payload2).then((res) => {});
+
+            const payload4 = new FormData();
+            payload4.append('id', getCookie().dxnlcm);
+            payload4.append('lotus', (mark / 10) * -award);
+            request.post('/user/addLotus.php', payload4).then((res) => {});
+
             navigate(config.routes.questionsTable, { replace: true });
         }
     }, [count, countRound]);

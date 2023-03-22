@@ -20,14 +20,26 @@ function ExternalLink() {
     let navigate = useNavigate();
 
     useEffect(() => {
-        request.get('/externallink/getType.php').then((res) => {
-            setTitle(res);
-        });
-        request.get('/externallink/getLink.php').then((res) => {
-            setLink(res);
-            setChosenCategory(2);
-            setChosenLink(res.filter((aLink) => aLink.type === 2));
-        });
+        request
+            .get('/static/getContents.php', {
+                params: {
+                    filename: 'title',
+                },
+            })
+            .then((res) => {
+                setTitle(res);
+            });
+        request
+            .get('/static/getContents.php', {
+                params: {
+                    filename: 'link',
+                },
+            })
+            .then((res) => {
+                setLink(res);
+                setChosenCategory(2);
+                setChosenLink(res.filter((aLink) => aLink.type === 2));
+            });
     }, []);
 
     const chooseCategory = (id) => {

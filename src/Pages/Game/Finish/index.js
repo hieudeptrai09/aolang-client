@@ -5,7 +5,7 @@ import { request, useGlobalStates, actions, getCookie } from '../../../warehouse
 import Question from '../component/Question';
 import config from '../../../config';
 
-function Finish({ tagId }) {
+function Finish({ tagId, award }) {
     const dispatch = useGlobalStates()[1];
 
     const [aQuestion, setAQuestion] = useState({});
@@ -128,7 +128,7 @@ function Finish({ tagId }) {
 
             const payload4 = new FormData();
             payload4.append('id', getCookie().dxnlcm);
-            payload4.append('lotus', (mark / 10) * -1);
+            payload4.append('lotus', (mark / 10) * -award);
             request.post('/user/addLotus.php', payload4).then((res) => {});
 
             if (countRound <= 10) navigate(config.routes.questionsTable, { replace: true });

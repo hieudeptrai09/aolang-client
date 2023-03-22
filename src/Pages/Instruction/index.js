@@ -17,16 +17,28 @@ function Instruction() {
     const [members, setMembers] = useState([]);
 
     useEffect(() => {
-        request.get('/information/getStructure.php').then((res) => {
-            setStructure(res);
-        });
+        request
+            .get('/static/getContents.php', {
+                params: {
+                    filename: 'structure',
+                },
+            })
+            .then((res) => {
+                setStructure(res);
+            });
     }, []);
 
     useEffect(() => {
-        request.get('/information/getMember.php').then((res) => {
-            setMembers(res);
-            setCategory(2);
-        });
+        request
+            .get('/static/getContents.php', {
+                params: {
+                    filename: 'member',
+                },
+            })
+            .then((res) => {
+                setMembers(res);
+                setCategory(2);
+            });
     }, []);
 
     return (

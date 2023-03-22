@@ -13,9 +13,15 @@ function History() {
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
-        request.get('/information/getHistory.php').then((res) => {
-            setHistory(res);
-        });
+        request
+            .get('/static/getContents.php', {
+                params: {
+                    filename: 'history',
+                },
+            })
+            .then((res) => {
+                setHistory(res);
+            });
     }, []);
 
     useEffect(() => {
