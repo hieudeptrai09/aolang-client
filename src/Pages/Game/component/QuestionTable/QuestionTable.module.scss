@@ -14,6 +14,7 @@
     left: calc(50vw - 70px);
 }
 
+
 .wrapper {
     font-size: 2rem;
     border-collapse: separate;
@@ -139,6 +140,12 @@ th {
 .save-name {
     font-size: 2rem;
     color: white;
+}
+
+.report-rules {
+    font-size: 1.5rem;
+    color: yellow;
+    font-weight: bold;
 }
 
 .save-name-input {
