@@ -168,10 +168,11 @@ function MentalCalculating({ tagId, award }) {
             payload2.append('tagId', 20);
             request.post('/maxpoint/saveMaxPoint.php', payload2).then((res) => {});
 
-            const payload4 = new FormData();
-            payload4.append('id', getCookie().dxnlcm);
-            payload4.append('lotus', (mark / 10) * -award);
-            request.post('/user/addLotus.php', payload4).then((res) => {});
+            // calculaphobia no longer credit lotus
+            //const payload4 = new FormData();
+            //payload4.append('id', getCookie().dxnlcm);
+            //payload4.append('lotus', (mark / 10) * -award);
+            //request.post('/user/addLotus.php', payload4).then((res) => {});
 
             navigate(config.routes.questionsTable, { replace: true });
         }
