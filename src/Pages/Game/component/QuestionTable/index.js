@@ -162,13 +162,9 @@ function QuestionTable() {
                                                     <p className={cx('save-name')}>
                                                         Bạn muốn báo cáo điều gì ở câu số {index + 1}?
                                                     </p>
-                                                    <button
-                                                        id={'send-' + index}
-                                                        className="popup-btn"
-                                                        onClick={(e) => toSend(e)}
-                                                    >
-                                                        Lưu
-                                                    </button>
+                                                    <a className={cx('report-rules')} href="http://tinyurl.com/AOLANG-Report-Etiquette" target="_blank">
+                                                        QUY ƯỚC BÁO CÁO
+                                                    </a>
                                                 </div>
                                                 <textarea
                                                     className={cx('send-report-input')}
@@ -181,6 +177,13 @@ function QuestionTable() {
                                                             .classList.add(styles['will-send-successfully']);
                                                     }}
                                                 ></textarea>
+                                                <button
+                                                        id={'send-' + index}
+                                                        className="popup-btn"
+                                                        onClick={(e) => toSend(e)}
+                                                    >
+                                                        Lưu
+                                                    </button>
                                                 {
                                                     <p
                                                         id={'send-inform-' + index}
