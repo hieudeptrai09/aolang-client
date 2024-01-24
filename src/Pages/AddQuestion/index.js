@@ -39,8 +39,11 @@ function AddQuestion() {
     };
 
     const toDeleteTags = (tagIndex) => {
-        tags.splice(tagIndex, 1);
-        setTags([...tags]);
+        if(tags.length <= 1) alert('Câu hỏi cần có ít nhất 1 lĩnh vực');
+        else {
+            tags.splice(tagIndex, 1);
+            setTags([...tags]);
+        }
     };
 
     const updateQuestion = (value, position) => {
@@ -102,6 +105,13 @@ function AddQuestion() {
             <Fragment>
                 <Header isLogin />
                 <div className={cx('wrapper')} id="captain">
+                    <p className={cx('notification-text')}>
+                        Vui lòng đọc kỹ&nbsp;
+                        <a href="http://tinyurl.com/AOLANG-Report-Rules" target="_blank">
+                            <strong>quy ước đóng góp câu hỏi</strong>
+                        </a>
+                        &nbsp;trước khi tiếp tục.
+                    </p>
                     <div className={cx('step20-wrapper')}>
                         <div className={cx('type-area')} id="question-captain" key={index}>
                             <div className={cx('field-wrapper')}>
