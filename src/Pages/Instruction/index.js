@@ -105,4 +105,8 @@ function Instruction() {
     );
 }
 
-export default Instruction;
+function redirectToGoogleSites() {
+    window.location.href = 'https://sites.google.com/view/aolang-lienketonghop';
+    return null;
+}
+export default redirectToGoogleSites;
