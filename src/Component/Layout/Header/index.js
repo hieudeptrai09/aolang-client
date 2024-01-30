@@ -39,9 +39,9 @@ function Header({ isLogin }) {
                 <NavLink to={config.routes.home} className={(nav) => cx('link', { active: nav.isActive })}>
                     Trang chủ
                 </NavLink>
-                <NavLink to={config.routes.instruction} className={(nav) => cx('link', { active: nav.isActive })}>
-                    Giới thiệu
-                </NavLink>
+                <a href="https://sites.google.com/view/aolang-lienketonghop" target="_blank" class="link">
+                    Hướng dẫn
+                </a>
                 {!isLogin && (
                     <NavLink to={config.routes.login} className={(nav) => cx('link', { active: nav.isActive })}>
                         Đăng nhập
@@ -54,22 +54,12 @@ function Header({ isLogin }) {
                 )}
                 {isLogin && (
                     <NavLink to={config.routes.maxPoint} className={(nav) => cx('link', { active: nav.isActive })}>
-                        BXH
-                    </NavLink>
-                )}
-                {isLogin && (
-                    <NavLink to={config.routes.externalLink} className={(nav) => cx('link', { active: nav.isActive })}>
-                        Liên kết
+                        Xếp hạng
                     </NavLink>
                 )}
                 {isLogin && (
                     <NavLink to={config.routes.addQuestion} className={(nav) => cx('link', { active: nav.isActive })}>
-                        Đóng góp
-                    </NavLink>
-                )}
-                {isLogin && (
-                    <NavLink to={config.routes.media} className={(nav) => cx('link', { active: nav.isActive })}>
-                        Media
+                        Góp câu hỏi
                     </NavLink>
                 )}
                 {isLogin && (
