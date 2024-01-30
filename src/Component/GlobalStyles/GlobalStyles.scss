@@ -90,7 +90,7 @@ a:hover {
 
 .popup-wrapper {
     width: 35vw;
-    height: 35vh;
+    height: 45vh;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -142,4 +142,17 @@ a:hover {
 
 .ql-editor {
     font-family: var(--primitive-font-family);
+}
+
+a.link {
+    padding: 1.76vh;
+    border-radius: 999px;
+    color: #afabab;
+
+    &.active {
+        padding-top: 1.2vh;
+        padding-bottom: 1.2vh;
+        background-color: #54ae7b;
+        color: white;
+    }
 }
