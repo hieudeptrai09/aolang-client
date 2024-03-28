@@ -1,179 +1,314 @@
-import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { audios } from '../../../assets';
-import { request, useGlobalStates, actions, getCookie } from '../../../warehouse';
-import Question from '../component/Question';
-import config from '../../../config';
+import { useLayoutEffect, useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../../../../Component/Layout/Header';
+import classNames from 'classnames/bind';
+import formatAnswer from '../formatAnswer';
+import isCorrect from '../isCorrect';
+import CustomizeAudio from '../../../../Component/CustomizeAudio';
+import { audios } from '../../../../assets';
+import styles from './Question.module.scss';
+import config from '../../../../config';
+import { getCookie, request } from '../../../../warehouse';
+import Popup from 'reactjs-popup';
 
-function Finish({ tagId, award }) {
-    const dispatch = useGlobalStates()[1];
+const cx = classNames.bind(styles);
 
-    const [aQuestion, setAQuestion] = useState({});
-    const [ids, setIds] = useState([]);
-    const [count, setCount] = useState(1);
-    const [mark, setMark] = useState(0);
-    const [correctAnswered, setCorrectAnswered] = useState([]);
-    const [playersAnswered, setPlayersAnswered] = useState([]);
-    const [playersAnsweredWithId, setPlayersAnsweredWithId] = useState([]);
-    const [time, setTime] = useState(-1);
-    const [countRound, setCountRound] = useState(0);
-    const [askedQuestion, setAskedQuestion] = useState([]);
-    let navigate = useNavigate();
-    const tenSecondRef = useRef(new Audio(audios.tenSecond));
-    const fifteenSecondRef = useRef(new Audio(audios.fifteenSecond));
-    const twentySecondRef = useRef(new Audio(audios.twentySecond));
-    const twentyFiveSecondRef = useRef(new Audio(audios.twentyFiveSecond));
-    const [isDisconnect, setIsDisconnect] = useState(false);
-    const waitingRef = useRef();
+function Question({
+    aQuestion,
+    time,
+    maxTime,
+    waiting,
+    count,
+    setCount,
+    mark,
+    setMark,
+    setCorrectAnswered,
+    setPlayersAnswered,
+    setPlayersAnsweredWithId,
+    readingAnswer,
+    maxMark,
+    instantMark,
+    countRound,
+    setCountRound,
+    mode,
+    isDisconnect,
+    star,
+    setStar,
+    alreadyUseStar,
+    setAlreadyUseStar
+}) {
+    const [answer, setAnswer] = useState('');
+    const [answered, setAnswered] = useState('');
+    const [answerDisplay, setAnswerDisplay] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [imageReveal, setImageReveal] = useState(true);
+    const [starOpened, setStarOpened] = useState(true);
 
-    const marks = [10, 10, 10, 10, 20, 20, 20, 30, 30, 40];
-    const times = [10, 10, 10, 10, 15, 15, 15, 20, 20, 25];
-    const audioArray = [
-        tenSecondRef,
-        tenSecondRef,
-        tenSecondRef,
-        tenSecondRef,
-        fifteenSecondRef,
-        fifteenSecondRef,
-        fifteenSecondRef,
-        twentySecondRef,
-        twentySecondRef,
-        twentyFiveSecondRef,
-    ];
+    const inputRef = useRef();
+    const correctRef = useRef(new Audio(audios.correct));
+    const wrongRef = useRef(new Audio(audios.wrong));
 
-    useEffect(() => {
-        if (count > 0 && count <= 10) {
-            request
-                .get('/question/getARandomQuestion.php', {
-                    params: {
-                        type: 'hurdling',
-                        difficulty: marks[count - 1],
-                        ids: JSON.stringify(ids),
-                        tagId: tagId,
-                    },
-                })
-                .then((data) => {
-                    let question = data;
-                    setAQuestion(question);
-                    setIds([...ids, question.id]);
-                    setAskedQuestion([...askedQuestion, question]);
-                    setTime(-1);
-                    let waiting = question.question.split(' ').length * 100;
-                    if (question.audio) {
-                        let a = new Audio(question.audio);
-                        let audioDuration = 0;
-                        a.preload = 'metadata';
-                        a.onloadedmetadata = () => {
-                            audioDuration = a.duration;
-                            waiting = Math.ceil(Math.max(waiting, audioDuration * 1000));
-                            waitingRef.current = waiting;
-                            setTimeout(() => {
-                                setTime(times[count - 1]);
-                                audioArray[count - 1].current.play();
-                                if (countRound > 10) audioArray[count - 1].current.pause();
-                            }, waiting);
-                        };
-                    } else {
-                        waitingRef.current = waiting;
-                        setTimeout(() => {
-                            setTime(times[count - 1]);
-                            audioArray[count - 1].current.play();
-                            if (countRound > 10) audioArray[count - 1].current.pause();
-                        }, waiting);
-                    }
-                })
-                .catch(() => {
-                    setIsDisconnect(true);
-                });
-        } else if (count > 10) {
-            let askedQuestionCorrect = [];
-            let j = 0;
-            for (let i = 0; i < askedQuestion.length; i++) {
-                if (askedQuestion[i].id !== playersAnsweredWithId[j].id) {
-                } else {
-                    askedQuestionCorrect.push(askedQuestion[i]);
-                    ++j;
-                }
-                if (j >= playersAnsweredWithId.length) break;
-            }
+    const starRef = useRef(new Audio(audios.star));
+    
 
-            audioArray[10 - 1].current.pause();
-            dispatch(actions.setMode('hurdling'));
-            dispatch(actions.setMark(mark));
-            dispatch(actions.setAskedQuestion(askedQuestionCorrect));
-            dispatch(actions.setCorrect(correctAnswered));
-            dispatch(actions.setAnswered(playersAnswered));
-            const payload = new FormData();
-            let id = [];
-            for (let i = 0; i < askedQuestion.length; i++) {
-                id.push(askedQuestion[i].id);
-            }
-            payload.append('ids', JSON.stringify(id));
-            payload.append('areCorrect', JSON.stringify(correctAnswered));
-            request.post('/question/rightOrWrong.php', payload).then((res) => {});
+    const navigate = useNavigate();
 
-            const payload2 = new FormData();
-            payload2.append('userId', getCookie().dxnlcm);
-            payload2.append('mark', mark);
-            payload2.append('time', new Date().getTime());
-            payload2.append('tagId', 2);
-            request.post('/maxpoint/saveMaxPoint.php', payload2).then((res) => {});
+    const selectStar = () => {
+        setStar(true);
+        starRef.current.play();
+    }
 
-            const payload3 = new FormData();
-            payload3.append('ids', JSON.stringify(id));
-            payload3.append('answered', JSON.stringify(playersAnswered));
-            payload3.append('tagId', tagId);
-            payload3.append('userId', getCookie().dxnlcm);
-            request.post('/usersanswer/save.php', payload3).then((res) => {});
-
-            const payload4 = new FormData();
-            payload4.append('id', getCookie().dxnlcm);
-            payload4.append('lotus', (mark / 10) * -award);
-            request.post('/user/addLotus.php', payload4).then((res) => {});
-
-            if (countRound <= 10) navigate(config.routes.questionsTable, { replace: true });
+    const doWhenCorrect = () => {
+        wrongRef.current.pause();
+        correctRef.current.play();
+        if(star === true && alreadyUseStar === false) {
+            setMark(mark + maxMark + maxMark);
+            setAlreadyUseStar(true);
         }
-    }, [count, countRound]);
+        else {
+            setMark(mark + maxMark);
+        }
+        
+        // if (readingAnswer > 0) inputRef.current.classList.add(styles.correct);
+        setCorrectAnswered((prev) => [...prev, true]);
+    };
+
+    const doWhenWrong = () => {
+        correctRef.current.pause();
+        wrongRef.current.play();
+
+        if(star === true && alreadyUseStar === false) {
+            setMark(mark - maxMark);
+            setAlreadyUseStar(true);
+        }
+
+        // if (readingAnswer > 0) inputRef.current.classList.add(styles.wrong);
+        setCorrectAnswered((prev) => [...prev, false]);
+    };
+
+    const resetInputAns = () => {
+        // inputRef.current.classList.remove(styles.correct);
+        correctRef.current.currentTime = 0;
+        // inputRef.current.classList.remove(styles.wrong);
+        wrongRef.current.currentTime = 0;
+        // inputRef.current.disabled = false;
+        // inputRef.current.focus();
+        setAnswer('');
+        if (readingAnswer > 0) setAnswered('');
+        if (readingAnswer > 0) setAnswerDisplay(false);
+        setSubmitted(false);
+        setCount(count + 1);
+        setStarOpened(true);
+    };
+
+    const informResult = (playersAnswer) => {
+        setPlayersAnsweredWithId((prev) => [...prev, { id: aQuestion.id, playersAnswer: playersAnswer }]);
+
+        setPlayersAnswered((prev) => [...prev, playersAnswer]);
+
+        if (isCorrect(playersAnswer, aQuestion.answer)) {
+            doWhenCorrect();
+        } else {
+            doWhenWrong();
+        }
+        // inputRef.current.disabled = true;
+        if (readingAnswer > 0) setAnswerDisplay(true);
+        setTimeout(() => {
+            resetInputAns();
+        }, readingAnswer);
+    };
+
+    const submit = (e) => {
+        if (e.keyCode === 13) {
+            //mã phím Enter
+            setSubmitted(true);
+            if (instantMark) {
+                informResult(answer);
+            } else {
+                setAnswered(answer);
+                setAnswer('');
+            }
+        }
+    };
 
     useEffect(() => {
-        return () => {
-            tenSecondRef.current.pause();
-            fifteenSecondRef.current.pause();
-            twentySecondRef.current.pause();
-            twentyFiveSecondRef.current.pause();
-        };
+        if (readingAnswer > 0) {
+            wrongRef.current.pause();
+            correctRef.current.pause();
+        }
+    }, [count]);
+
+    useLayoutEffect(() => {
+        if (time === 0) {
+            // inputRef.current.disabled = true;
+            if (!instantMark) informResult(answered);
+            if (!submitted && instantMark) doWhenWrong();
+            if (readingAnswer > 0) setAnswerDisplay(true);
+            setTimeout(() => {
+                resetInputAns();
+            }, readingAnswer);
+        }
+    }, [time]);
+
+    useLayoutEffect(() => {
+        //marathon
+        if (instantMark) {
+            document.getElementById('time').classList.remove(cx('time-animation'));
+            void document.getElementById('time').offsetHeight;
+            document.getElementById('time').classList.add(cx('time-animation'));
+            document.getElementById('time').style.animationDelay = waiting / 1000 + 's';
+            document.getElementById('time').style.animationDuration = maxTime + 's';
+        }
     }, []);
 
     useLayoutEffect(() => {
-        const timerId = setTimeout(() => {
-            if (time > 0) setTime(time - 1);
-        }, 1000);
+        //hurdling
+        if (!instantMark && countRound <= limit(mode)) {
+            
 
-        return () => clearInterval(timerId);
-    }, [time]);
+            setTimeout(() => {
+                setStarOpened(false);
+                document.getElementById('time').classList.remove(cx('time-animation'));
+                void document.getElementById('time').offsetHeight;
+                document.getElementById('time').classList.add(cx('time-animation'));
+                document.getElementById('time').style.animationDelay = waiting / 1000 + 's';
+                document.getElementById('time').style.animationDuration = maxTime + 's';
+            }, 5000);
+        }
+    }, [count]);
 
-    return (
-        <Question
-            aQuestion={aQuestion}
-            time={time}
-            maxTime={times[count - 1]}
-            waiting={waitingRef.current}
-            count={count}
-            setCount={setCount}
-            mark={mark}
-            setMark={setMark}
-            setCorrectAnswered={setCorrectAnswered}
-            setPlayersAnswered={setPlayersAnswered}
-            setPlayersAnsweredWithId={setPlayersAnsweredWithId}
-            readingAnswer={5000}
-            maxMark={marks[count - 1]}
-            instantMark={false}
-            countRound={countRound}
-            setCountRound={setCountRound}
-            mode="hurdling"
-            isDisconnect={isDisconnect}
-        />
-    );
+    useEffect(() => {
+        let date = new Date();
+        request
+            .get('/usersanswer/countRound.php', {
+                params: {
+                    id: getCookie().dxnlcm,
+                    time: date.getTime(),
+                    firstTime: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0).getTime(),
+                    mode: mode,
+                },
+            })
+            .then((res) => {
+                setCountRound(Number.parseInt(res));
+            });
+    }, []);
+
+    const limit = (mode) => {
+        if (mode === 'marathon') return 20;
+        else if (mode === 'hurdling') return 10;
+        else return 1000000000;
+    };
+
+    if (getCookie().islogin || getCookie().dxnlcm !== undefined) {
+        if (countRound <= limit(mode)) {
+            return (
+                <div>
+                    <Header isLogin />
+                    <div className={cx('wrapper')}>
+                        <Popup open={isDisconnect}>
+                            <div className={cx('popup-wrapper')}>
+                                <p>Có vẻ bạn đã bị mất kết nối</p>
+                                <Link className={cx('popup-btn')} to={config.routes.home}>
+                                    Quay trở lại
+                                </Link>
+                            </div>
+                        </Popup>
+                        <div className={cx('first-division')}>
+                            <div className={cx('point-wrapper')}>
+                                <p className={cx('point')}>{mark}</p>
+                            </div>
+                            <div className={cx('question-wrapper')}>
+                                <div className={cx('question-count-wrapper')}>
+                                    <p className={cx('question-major')}>
+                                        <span className={cx('question-count')}>
+                                            Câu hỏi số {count} ({maxMark} điểm) 
+                                            {
+                                                mode == "hurdling" && star && !alreadyUseStar ? <span className={cx('star-text')}> - NGÔI SAO HY VỌNG</span> : ""
+                                            }
+                                        </span>
+                                    </p>
+                                </div>
+                                <div className={cx('question-content-wrapper')}>
+                                    <p className={cx('question-content')}>{aQuestion.question}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('second-division')}>
+                            
+                            <div className={cx('miscellaneous')}>
+                                {
+                                    mode == "hurdling" && !star && !alreadyUseStar && starOpened ? <button className={cx('star-choose')} onClick={() => selectStar()
+                                    }>
+                                    SỬ DỤNG NGÔI SAO HY VỌNG
+                                </button> : ""
+                                }
+                                <p>Thời gian</p>
+                                <div className={cx('time-wrapper')}>
+                                    <div className={cx('time')} id="time"></div>
+                                </div>
+                                <div className={cx('answer-wrapper')}>
+                                    <p className={cx('answer-label')}>Đáp án câu hỏi trước</p>
+                                    <p className={cx('answer-content')}>
+                                        {answerDisplay ? formatAnswer(aQuestion.answer) : ''}
+                                    </p>
+                                </div>
+                                <textarea
+                                    className={cx('input')}
+                                    ref={inputRef}
+                                    value={answer}
+                                    onChange={(e) => setAnswer(e.target.value)}
+                                    onKeyUp={(e) => submit(e)}
+                                    autoFocus
+                                ></textarea>
+                                <p className={cx('answered')}>{answered}</p>
+                            </div>
+                            <div>
+                                {mode === 'deciphering' && (
+                                    <div>
+                                        <label className={cx('switch')} htmlFor="imageReveal">
+                                            <span
+                                                className={cx('slider', {
+                                                    'slider-on': imageReveal,
+                                                })}
+                                            ></span>
+                                        </label>
+                                        <input
+                                            type="checkbox"
+                                            className={cx('toggle')}
+                                            checked={imageReveal}
+                                            onChange={() => setImageReveal((prev) => !prev)}
+                                            id="imageReveal"
+                                        />
+                                    </div>
+                                )}
+                                <div
+                                    className={cx('media', {
+                                        deciphering: mode === 'deciphering',
+                                    })}
+                                >
+                                    {aQuestion.image && imageReveal && (
+                                        <img className={cx('question-image')} src={aQuestion.image} alt="" />
+                                    )}
+                                    {aQuestion.audio && <CustomizeAudio src={aQuestion.audio} autoPlay={true} />}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Header isLogin />
+                    <div className={cx('wrapper', 'second-wrapper')}>
+                        <p>BẠN ĐÃ HẾT LƯỢT CHƠI NGÀY HÔM NAY</p>
+                    </div>
+                </div>
+            );
+        }
+    } else {
+        navigate(config.routes.login);
+    }
 }
 
-export default Finish;
+export default Question;
