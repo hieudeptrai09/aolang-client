@@ -32,23 +32,43 @@ function Question({
     setCountRound,
     mode,
     isDisconnect,
+    star,
+    setStar,
+    alreadyUseStar,
+    setAlreadyUseStar
 }) {
     const [answer, setAnswer] = useState('');
     const [answered, setAnswered] = useState('');
     const [answerDisplay, setAnswerDisplay] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [imageReveal, setImageReveal] = useState(true);
+    const [starOpened, setStarOpened] = useState(true);
 
     const inputRef = useRef();
     const correctRef = useRef(new Audio(audios.correct));
     const wrongRef = useRef(new Audio(audios.wrong));
 
+    const starRef = useRef(new Audio(audios.star));
+    
+
     const navigate = useNavigate();
+
+    const selectStar = () => {
+        setStar(true);
+        starRef.current.play();
+    }
 
     const doWhenCorrect = () => {
         wrongRef.current.pause();
         correctRef.current.play();
-        setMark(mark + maxMark);
+        if(star === true && alreadyUseStar === false) {
+            setMark(mark + maxMark + maxMark);
+            setAlreadyUseStar(true);
+        }
+        else {
+            setMark(mark + maxMark);
+        }
+        
         // if (readingAnswer > 0) inputRef.current.classList.add(styles.correct);
         setCorrectAnswered((prev) => [...prev, true]);
     };
@@ -56,6 +76,12 @@ function Question({
     const doWhenWrong = () => {
         correctRef.current.pause();
         wrongRef.current.play();
+
+        if(star === true && alreadyUseStar === false) {
+            setMark(mark - maxMark);
+            setAlreadyUseStar(true);
+        }
+
         // if (readingAnswer > 0) inputRef.current.classList.add(styles.wrong);
         setCorrectAnswered((prev) => [...prev, false]);
     };
@@ -72,6 +98,7 @@ function Question({
         if (readingAnswer > 0) setAnswerDisplay(false);
         setSubmitted(false);
         setCount(count + 1);
+        setStarOpened(true);
     };
 
     const informResult = (playersAnswer) => {
@@ -137,11 +164,16 @@ function Question({
     useLayoutEffect(() => {
         //hurdling
         if (!instantMark && countRound <= limit(mode)) {
-            document.getElementById('time').classList.remove(cx('time-animation'));
-            void document.getElementById('time').offsetHeight;
-            document.getElementById('time').classList.add(cx('time-animation'));
-            document.getElementById('time').style.animationDelay = waiting / 1000 + 's';
-            document.getElementById('time').style.animationDuration = maxTime + 's';
+            
+
+            setTimeout(() => {
+                setStarOpened(false);
+                document.getElementById('time').classList.remove(cx('time-animation'));
+                void document.getElementById('time').offsetHeight;
+                document.getElementById('time').classList.add(cx('time-animation'));
+                document.getElementById('time').style.animationDelay = waiting / 1000 + 's';
+                document.getElementById('time').style.animationDuration = maxTime + 's';
+            }, 5000);
         }
     }, [count]);
 
@@ -189,7 +221,10 @@ function Question({
                                 <div className={cx('question-count-wrapper')}>
                                     <p className={cx('question-major')}>
                                         <span className={cx('question-count')}>
-                                            Câu hỏi số {count} ({maxMark} điểm)
+                                            Câu hỏi số {count} ({maxMark} điểm) 
+                                            {
+                                                mode == "hurdling" && star && !alreadyUseStar ? <span className={cx('star-text')}> - NGÔI SAO HY VỌNG</span> : ""
+                                            }
                                         </span>
                                     </p>
                                 </div>
@@ -199,7 +234,14 @@ function Question({
                             </div>
                         </div>
                         <div className={cx('second-division')}>
+                            
                             <div className={cx('miscellaneous')}>
+                                {
+                                    mode == "hurdling" && !star && !alreadyUseStar && starOpened ? <button className={cx('star-choose')} onClick={() => selectStar()
+                                    }>
+                                    SỬ DỤNG NGÔI SAO HY VỌNG
+                                </button> : ""
+                                }
                                 <p>Thời gian</p>
                                 <div className={cx('time-wrapper')}>
                                     <div className={cx('time')} id="time"></div>
