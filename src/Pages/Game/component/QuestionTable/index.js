@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import Popup from 'reactjs-popup';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -9,16 +9,25 @@ import styles from './QuestionTable.module.scss';
 import config from '../../../../config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { faBullhorn, faCircleInfo, faFlag, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faCircleInfo, faFlag, faImage, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function QuestionTable() {
     const state = useGlobalStates()[0];
     const [report, setReport] = useState('');
+    const [countdownClock, setCountdownClock] = useState(15);
+
     let navigate = useNavigate();
 
     const cookies = useRef(getCookie());
+
+    useLayoutEffect(() => {
+        const timerId = setTimeout(() => {
+            if (countdownClock > 0 && state.mode !== "calculaphobia" && state.mode !== "deciphering") setCountdownClock(countdownClock - 1);
+        }, 1000);
+        return () => clearInterval(timerId);
+    }, [countdownClock]);
 
     const toSend = (e) => {
         const index = e.target.id.substring(5);
@@ -38,11 +47,20 @@ function QuestionTable() {
     return (
         <div id="captain">
             <p className={cx('mark')}>{state.mark}</p>
+            {
+                countdownClock > 0 && state.mode !== 'deciphering' && state.mode !== "calculaphobia" ? 
+                <div className={cx('footer-notifications')}>
+                    <p>Bạn có thể tiếp tục chơi sau <strong className={cx('countdown-clock')}>{countdownClock}s</strong>.</p>
+                    <p><em>Trong lúc này, hãy dành một chút thời gian xem lại các câu hỏi nhé!</em></p>
+                </div> : ""
+            }
+            
             <table className={cx('wrapper')}>
                 <thead>
                     <tr>
                         <th>Câu hỏi</th>
                         <th>Nguồn</th>
+                        <th>ID</th>
                         <th>Người chơi</th>
                         <th>Đáp án</th>
                         <th></th>
@@ -94,6 +112,7 @@ function QuestionTable() {
                                 )}
                             </td>
                             <td className={cx('content-item')}>{eachQuestion.credit}</td>
+                            <td className={cx('content-item')}>{eachQuestion.id}</td>
                             <td
                                 className={cx('content-item', {
                                     wrong: state.correct[index] === false,
@@ -119,7 +138,7 @@ function QuestionTable() {
                                     >
                                         <div className={cx('explain-wrapper')}>
                                             {state.mode === 'vocab' ? (
-                                                <p>Câu ví dụ cho từ {eachQuestion.answer}</p>
+                                                <p><strong>Câu ví dụ cho từ {eachQuestion.answer}</strong></p>
                                             ) : (
                                                 <p>Giải thích câu hỏi số {index + 1}</p>
                                             )}
@@ -162,13 +181,12 @@ function QuestionTable() {
                                                     <p className={cx('save-name')}>
                                                         Bạn muốn báo cáo điều gì ở câu số {index + 1}?
                                                     </p>
-                                                    <button
-                                                        id={'send-' + index}
-                                                        className="popup-btn"
-                                                        onClick={(e) => toSend(e)}
-                                                    >
-                                                        Lưu
-                                                    </button>
+                                                    <p className={cx('warning-text')}>
+                                                        Các báo cáo không thực hiện đúng theo hướng dẫn sẽ không được duyệt, vi phạm nhiều lần sẽ bị khóa tài khoản
+                                                    </p>
+                                                    <a className={cx('report-rules')} href="http://tinyurl.com/AOLANG-Report-Rules" target="_blank">
+                                                        <FontAwesomeIcon icon={faTriangleExclamation} /> Hướng dẫn báo cáo câu hỏi
+                                                    </a>
                                                 </div>
                                                 <textarea
                                                     className={cx('send-report-input')}
@@ -181,6 +199,13 @@ function QuestionTable() {
                                                             .classList.add(styles['will-send-successfully']);
                                                     }}
                                                 ></textarea>
+                                                <button
+                                                        id={'send-' + index}
+                                                        className={cx('popup-btn')}
+                                                        onClick={(e) => toSend(e)}
+                                                    >
+                                                        Lưu
+                                                    </button>
                                                 {
                                                     <p
                                                         id={'send-inform-' + index}
@@ -200,17 +225,20 @@ function QuestionTable() {
                     ))}
                 </tbody>
             </table>
-            <div className={cx('footer-btn-wrapper')}>
+            {
+                countdownClock == 0 && state.mode !== 'deciphering' && state.mode !== "calculaphobia" ? <div className={cx('footer-btn-wrapper')}>
                 <button
                     className={cx('ques-table-btn')}
                     onClick={() => navigate(config.routes.game + '?mode=' + state.mode)}
                 >
-                    Chơi lại mode cũ
+                    Chơi lại chế độ cũ
                 </button>
                 <button className={cx('ques-table-btn')} onClick={() => navigate(config.routes.home)}>
                     Về trang chủ
                 </button>
-            </div>
+                </div> : ""
+            }
+            
         </div>
     );
 }
