@@ -5,7 +5,7 @@ import { request, useGlobalStates, actions, getCookie } from '../../../warehouse
 import Question from '../component/Question';
 import config from '../../../config';
 
-function Finish({ tagId, award }) {
+function Finish({ tagId, referenceTagId, award }) {
     const dispatch = useGlobalStates()[1];
 
     const [aQuestion, setAQuestion] = useState({});
@@ -23,7 +23,12 @@ function Finish({ tagId, award }) {
     const fifteenSecondRef = useRef(new Audio(audios.fifteenSecond));
     const twentySecondRef = useRef(new Audio(audios.twentySecond));
     const twentyFiveSecondRef = useRef(new Audio(audios.twentyFiveSecond));
+    
+
     const [isDisconnect, setIsDisconnect] = useState(false);
+    const [star, setStar] = useState(false);
+    const [alreadyUseStar, setAlreadyUseStar] = useState(false);
+    
     const waitingRef = useRef();
 
     const marks = [10, 10, 10, 10, 20, 20, 20, 30, 30, 40];
@@ -43,44 +48,64 @@ function Finish({ tagId, award }) {
 
     useEffect(() => {
         if (count > 0 && count <= 10) {
+            
             request
                 .get('/question/getARandomQuestion.php', {
                     params: {
                         type: 'hurdling',
                         difficulty: marks[count - 1],
                         ids: JSON.stringify(ids),
-                        tagId: tagId,
+                        tagId: referenceTagId,
                     },
                 })
                 .then((data) => {
                     let question = data;
-                    setAQuestion(question);
+                    let waiting = question.question.split(' ').length * 100;
+
+                    if(alreadyUseStar === true) {
+                        setStar(false)
+                    }
+
+                    {
+                        !star && !alreadyUseStar ? setAQuestion({
+                            "question": `Ngôi sao hi vọng có thể giúp bạn nhân đôi số điểm của câu hỏi này! Nhấn vào nút Sử dụng ngôi sao hy vọng để sử dụng nhé.`
+                        }) : setAQuestion({
+                            "question": "Chúc bạn thành công ở câu hỏi sắp tới!"
+                        });
+                    }
+
+                   
+                    
                     setIds([...ids, question.id]);
                     setAskedQuestion([...askedQuestion, question]);
                     setTime(-1);
-                    let waiting = question.question.split(' ').length * 100;
-                    if (question.audio) {
-                        let a = new Audio(question.audio);
-                        let audioDuration = 0;
-                        a.preload = 'metadata';
-                        a.onloadedmetadata = () => {
-                            audioDuration = a.duration;
-                            waiting = Math.ceil(Math.max(waiting, audioDuration * 1000));
+                    setTimeout(function() {
+                        setAQuestion(question);
+                        
+                        if (question.audio) {
+                            let a = new Audio(question.audio);
+                            let audioDuration = 0;
+                            a.preload = 'metadata';
+                            a.onloadedmetadata = () => {
+                                audioDuration = a.duration;
+                                waiting = Math.ceil(Math.max(waiting, audioDuration * 1000));
+                                waitingRef.current = waiting;
+                                setTimeout(() => {
+                                    setTime(times[count - 1]);
+                                    audioArray[count - 1].current.play();
+                                    if (countRound > 10) audioArray[count - 1].current.pause();
+                                }, waiting);
+                            };
+                        } else {
                             waitingRef.current = waiting;
                             setTimeout(() => {
                                 setTime(times[count - 1]);
                                 audioArray[count - 1].current.play();
                                 if (countRound > 10) audioArray[count - 1].current.pause();
                             }, waiting);
-                        };
-                    } else {
-                        waitingRef.current = waiting;
-                        setTimeout(() => {
-                            setTime(times[count - 1]);
-                            audioArray[count - 1].current.play();
-                            if (countRound > 10) audioArray[count - 1].current.pause();
-                        }, waiting);
-                    }
+                        }
+                    }, 5000)
+                    
                 })
                 .catch(() => {
                     setIsDisconnect(true);
@@ -116,13 +141,13 @@ function Finish({ tagId, award }) {
             payload2.append('userId', getCookie().dxnlcm);
             payload2.append('mark', mark);
             payload2.append('time', new Date().getTime());
-            payload2.append('tagId', 2);
+            payload2.append('tagId', tagId);
             request.post('/maxpoint/saveMaxPoint.php', payload2).then((res) => {});
 
             const payload3 = new FormData();
             payload3.append('ids', JSON.stringify(id));
             payload3.append('answered', JSON.stringify(playersAnswered));
-            payload3.append('tagId', tagId);
+            payload3.append('tagId', referenceTagId);
             payload3.append('userId', getCookie().dxnlcm);
             request.post('/usersanswer/save.php', payload3).then((res) => {});
 
@@ -170,6 +195,10 @@ function Finish({ tagId, award }) {
             instantMark={false}
             countRound={countRound}
             setCountRound={setCountRound}
+            star={star}
+            setStar={setStar}
+            alreadyUseStar={alreadyUseStar}
+            setAlreadyUseStar={setAlreadyUseStar}
             mode="hurdling"
             isDisconnect={isDisconnect}
         />
