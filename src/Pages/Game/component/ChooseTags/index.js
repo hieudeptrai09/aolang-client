@@ -24,6 +24,7 @@ function ChooseTags() {
     const [lotus, setLotus] = useState(0);
     const [mode, setMode] = useState('');
     const [choseTags, setChoseTags] = useState(0);
+    const [referenceTags, setReferenceTags] = useState(0);
     const [award, setAward] = useState(0);
     const [totalQuestion, setTotalQuestion] = useState(0);
     const [result, setResult] = useState('');
@@ -140,18 +141,33 @@ function ChooseTags() {
                             })}
                             id="captain"
                         >
-                            {boughtTags.map((tag) => (
-                                <button
-                                    key={tag.id}
-                                    onClick={() => {
-                                        setChoseTags(tag.id);
-                                        setAward(tag.award);
-                                    }}
-                                    className={cx('tag', 'open')}
-                                >
-                                    {tag.tagname}
-                                </button>
-                            ))}
+                            {
+                                mode === 'hurdling' ? boughtTags.map((tag) => (
+                                    <button
+                                        key={tag.id}
+                                        onClick={() => {
+                                            setReferenceTags(tag.reference_marathon_id);
+                                            setChoseTags(tag.id);
+                                            setAward(tag.award);
+                                        }}
+                                        className={cx('tag', 'open')}
+                                    >
+                                        {tag.tagname}
+                                    </button>
+                                )) : boughtTags.map((tag) => (
+                                    <button
+                                        key={tag.id}
+                                        onClick={() => {
+                                            setChoseTags(tag.id);
+                                            setAward(tag.award);
+                                        }}
+                                        className={cx('tag', 'open')}
+                                    >
+                                        {tag.tagname}
+                                    </button>
+                                ))
+                            }
+                            
                             {lockTags.map((tag) => (
                                 <Popup
                                     key={tag.id}
@@ -213,7 +229,7 @@ function ChooseTags() {
                 case 'marathon':
                     return <Starting tagId={choseTags} award={award} />;
                 case 'hurdling':
-                    return <Finish tagId={choseTags} award={award} />;
+                    return <Finish tagId={choseTags} referenceTagId={referenceTags} award={award} />;
                 case 'calculaphobia':
                     return <MentalCalculating tagId={choseTags} award={award} />;
                 case 'deciphering':
