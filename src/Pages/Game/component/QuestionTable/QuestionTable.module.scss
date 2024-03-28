@@ -71,6 +71,7 @@ th {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    text-align: center;
     align-items: center;
     background-color: var(--primitive-color);
     border-radius: 10px;
@@ -121,6 +122,16 @@ th {
     justify-content: center;
 }
 
+.footer-notifications {
+    display: block;
+    text-align: center;
+    padding: 1rem;
+}
+
+.countdown-clock {
+    color: var(--primitive-color);
+}
+
 .ques-table-btn {
     display: block;
     width: 200px;
@@ -139,6 +150,24 @@ th {
 .save-name {
     font-size: 2rem;
     color: white;
+    text-align: center;
+}
+
+.warning-text {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+.report-rules {
+    font-size: 1.5rem;
+    color: yellow;
+    font-weight: bold;
+    text-align: center;
+}
+
+.report-rules:hover {
+    text-decoration: underline;
 }
 
 .save-name-input {
@@ -154,8 +183,28 @@ th {
 .popup-header {
     align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin-bottom: 15px;
+    gap: 10px;
     position: relative;
     width: 70%;
+}
+
+.popup-btn {
+    border-radius: 50px;
+    border: 1px white solid;
+    background: var(--primitive-color);
+    color: white;
+    font-size: 2rem;
+    padding: 10px 30px 10px 30px;
+}
+
+.popup-btn:hover {
+    border-radius: 50px;
+    border: 1px white solid;
+    background: white;
+    color: var(--primitive-color);
+    font-size: 2rem;
+    padding: 10px 30px 10px 30px;
 }
